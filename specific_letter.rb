@@ -16,14 +16,21 @@ def input_students
   students
 end
 
+def sort_letter
+  puts "Please enter the letter you wish to search"
+  letter = gets.chomp
+end
+
 def print_header
   puts "The students of my cohort at Makers Academy"
   puts "-------------"
 end
 
-def print(students)
-  students.each.with_index do |student, index|
-    puts "#{index}.#{student[:name]} (#{student[:cohort]} cohort)"
+def print(students,letter)
+  students.each do |student|
+    if student[:name][0] == letter
+      puts "#{student[:name]} (#{student[:cohort]} cohort)"
+    end
   end
 end
 
@@ -32,6 +39,7 @@ def print_footer(names)
 end
 # call methods
 students = input_students
+letter = sort_letter
 print_header
-print(students)
+print(students,letter)
 print_footer(students)
