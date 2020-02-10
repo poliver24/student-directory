@@ -1,8 +1,41 @@
+@students = [] # an empty array accessible to all methods
+
+def interactive_menu
+  loop do
+    print_menu
+    process(gets.chomp)
+  end
+end
+
+def process(selection)
+    case selection
+      when "1"
+        input_students
+      when "2"
+        show_students
+      when "9"
+        exit
+      else
+        puts "I don't know what you meant, try again"
+    end
+  end
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end
+
 def input_students
   puts "Please enter the names of the students and their cohort"
   puts "To finish, just hit return twice"
   # create empty array
-  students = []
   # get the first name
   name = gets.chomp
   # while the name is not empty, repeat this code
@@ -11,14 +44,12 @@ def input_students
     cohort = "november"
     puts "please enter the student's cohort"
     cohort = gets.chomp
-    students << {name: name, cohort: cohort}
-    puts "Now we have #{students.count} students"
+    @students << {name: name, cohort: cohort}
+    puts "Now we have #{@students.count} students"
     puts "Enter the next student"
     # get another name from the user
     name = gets.chomp
   end
-  # return the array of students
-  students.sort_by! { |student| [student[:name], student[:cohort]] }
 end
 
 def print_header
@@ -26,23 +57,20 @@ def print_header
   puts "-------------"
 end
 
-def print(students)
-  if students.count >= 1
-    students.each do |student|
+def print_students_list
+  if @students.count >= 1
+    @students.each do |student|
       puts "#{student[:name]} (#{student[:cohort]} cohort)"
     end
   end
 end
 
-def print_footer(names)
-  if names.count != 1
-    puts "Overall, we have #{names.count} great students"
-  elsif names.count == 1
-    puts "Overall, we have #{names.count} great student"
+def print_footer
+  if @students.count != 1
+    puts "Overall, we have #{@students.count} great students"
+  elsif @students.count == 1
+    puts "Overall, we have #{@students.count} great student"
   end
 end
 # call methods
-students = input_students
-print_header
-print(students)
-print_footer(students)
+interactive_menu
