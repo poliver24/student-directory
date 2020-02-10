@@ -4,7 +4,7 @@ def input_students
   # create empty array
   students = []
   # get the first name
-  name = gets.chomp
+  name = gets.gsub("\n","")
   # while the name is not empty, repeat this code
   while !name.empty? do
     # get their cohort
@@ -15,7 +15,7 @@ def input_students
     puts "Now we have #{students.count} students"
     puts "Enter the next student"
     # get another name from the user
-    name = gets.chomp
+    name = gets.gsub("\n","")
   end
   # return the array of students
   students.sort_by! { |student| [student[:name], student[:cohort]] }
@@ -27,10 +27,8 @@ def print_header
 end
 
 def print(students)
-  if students.count >= 1
-    students.each do |student|
-      puts "#{student[:name]} (#{student[:cohort]} cohort)"
-    end
+  students.each do |student|
+    puts "#{student[:name]} (#{student[:cohort]} cohort)"
   end
 end
 
