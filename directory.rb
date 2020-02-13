@@ -13,11 +13,9 @@ end
 def try_load_students
   filename = ARGV.first
   if filename.nil?
-    filename = "students.csv"
-  end
-  if File.exists?(filename)
+    load_students()
+  elsif File.exists?(filename)
     load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
   else
     puts "Sorry, #{filename} doesn't exist."
     exit
@@ -35,6 +33,7 @@ def load_students(filename = "students.csv")
       add_to_student_array(name, cohort)
     end
     file.close
+    puts "Loaded #{@students.count} students from #{filename}"
   end
 
 def interactive_menu
