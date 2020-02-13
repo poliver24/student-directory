@@ -1,20 +1,21 @@
 @students = []
 
-def save_students
-  file = File.open("students.csv", "w")
+def save_students(filename = "students.csv")
+  file = File.open(filename, "w")
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
   file.close
-  puts "Students Saved to students.csv"
+  puts "Students Saved to #{filename}"
 end
 
 def try_load_students
   filename = ARGV.first
   if filename.nil?
-    load_students()
+    File.open("students.csv", "w")
+    load_students("students.csv")
   elsif File.exists?(filename)
     load_students(filename)
   else
@@ -53,11 +54,11 @@ def process(selection)
         puts "Show Students"
         show_students
       when "3"
-        puts "Save Students"
-        save_students
+        puts "Which file would you like to save the students to?"
+          save_students(default_filename)
       when "4"
-        puts "Load Students"
-        load_students
+        puts "Which file would you like to load?"
+          load_students(default_filename)
       when "9"
         puts "Exit"
         exit
@@ -65,6 +66,14 @@ def process(selection)
         puts "I don't know what you meant, try again"
     end
   end
+
+def default_filename
+  filename = STDIN.gets.chomp
+  if filename.empty?
+    filename = "students.csv"
+  end
+  return filename
+end
 
 def print_menu
   puts "1. Input the students"
