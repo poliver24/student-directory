@@ -1,23 +1,22 @@
 @students = []
 
 def save_students(filename = "students.csv")
-  file = File.open(filename, "w")
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  File.open(filename, "w") do |f|
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      f.puts student_data.join(",")
+    end
   end
-  file.close
   puts "Students Saved to #{filename}"
 end
 
 def try_load_students
   filename = ARGV.first
   if filename.nil?
-    File.open("students.csv", "w")
-    load_students("students.csv")
+    load_students()
   elsif File.exists?(filename)
     load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
   else
     puts "Sorry, #{filename} doesn't exist."
     exit
@@ -29,12 +28,12 @@ def add_to_student_array(name, cohort)
 end
 
 def load_students(filename = "students.csv")
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
+  File.open(filename, "a+") do |file|
+    file.readlines.each do |line|
+      name, cohort = line.chomp.split(',')
       add_to_student_array(name, cohort)
     end
-    file.close
+  end
     puts "Loaded #{@students.count} students from #{filename}"
   end
 
