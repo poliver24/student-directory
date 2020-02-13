@@ -1,9 +1,7 @@
-@students = [] # an empty array accessible to all methods
+@students = []
 
 def save_students
-  # open the file for writing
   file = File.open("students.csv", "w")
-  # iterate over the array of students
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
@@ -14,21 +12,27 @@ end
 
 def try_load_students
   filename = ARGV.first
-  return if filename.nil?
+  if filename.nil?
+    filename = "students.csv"
+  end
   if File.exists?(filename)
     load_students(filename)
-      puts "Loaded #{@students.count} from #{filename}"
+    puts "Loaded #{@students.count} from #{filename}"
   else
     puts "Sorry, #{filename} doesn't exist."
     exit
   end
 end
 
+def add_to_student_array(name, cohort)
+  @students << {name: name, cohort: cohort.to_sym}
+end
+
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
-      @students << {name: name, cohort: cohort.to_sym}
+      add_to_student_array(name, cohort)
     end
     file.close
   end
@@ -74,19 +78,16 @@ end
 def input_students
   puts "Please enter the names of the students and their cohort"
   puts "To finish, just hit return twice"
-  # create empty array
-  # get the first name
   name = STDIN.gets.chomp
-  # while the name is not empty, repeat this code
   while !name.empty? do
-    # get their cohort
     cohort = "november"
     puts "please enter the student's cohort"
-    cohort = STDIN.gets.chomp
-    @students << {name: name, cohort: cohort}
+    if !name.empty?
+      cohort = STDIN.gets.chomp
+    end
+    add_to_student_array(name, cohort)
     puts "Now we have #{@students.count} students"
     puts "Enter the next student"
-    # get another name from the user
     name = gets.chomp
   end
 end
@@ -107,7 +108,7 @@ end
 def print_footer
   if @students.count != 1
     puts "Overall, we have #{@students.count} great students"
-  elsif @students.count == 1
+  else
     puts "Overall, we have #{@students.count} great student"
   end
 end
