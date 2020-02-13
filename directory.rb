@@ -8,6 +8,7 @@ def save_students
     file.puts csv_line
   end
   file.close
+  puts "Students Saved to students.csv"
 end
 
 def try_load_students
@@ -46,14 +47,19 @@ end
 def process(selection)
     case selection
       when "1"
+        puts "Input Students"
         input_students
       when "2"
+        puts "Show Students"
         show_students
       when "3"
+        puts "Save Students"
         save_students
       when "4"
+        puts "Load Students"
         load_students
       when "9"
+        puts "Exit"
         exit
       else
         puts "I don't know what you meant, try again"
@@ -89,6 +95,7 @@ def input_students
     puts "Enter the next student"
     name = gets.chomp
   end
+  "End of student input"
 end
 
 def print_header
